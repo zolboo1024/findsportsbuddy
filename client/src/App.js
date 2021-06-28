@@ -1,8 +1,9 @@
 import './App.css';
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
-import CustomNavbar from './Components/CustomNavbar';
 import LandingSearchPage from './Components/LandingSearchPage';
+import LoginPage from './Components/LoginPage';
+import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -23,10 +24,12 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <CustomNavbar />
-        <LandingSearchPage />
-      </div>
+      <Router>
+        <Switch>
+          <Route path='/login' component={LoginPage} />
+          <Route path='/' component={LandingSearchPage} />
+        </Switch>
+      </Router>
     );
   }
 }

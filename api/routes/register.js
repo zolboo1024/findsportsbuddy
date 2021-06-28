@@ -1,3 +1,5 @@
+//API /register. Saves the username and a hashed PW to the DB
+//Zolboo
 var express = require('express');
 var router = express.Router();
 var verifyRegister = require('./../middleware/verifyRegister');

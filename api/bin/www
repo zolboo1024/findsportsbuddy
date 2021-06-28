@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-
+//entry point of the app i.e. what runs when npm start is called
+//Zolboo
 /**
  * Module dependencies.
  */

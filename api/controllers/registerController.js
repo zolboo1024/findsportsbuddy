@@ -5,7 +5,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 //register controller
-signup = (req, res) => {
+register = (req, res) => {
     //info to register
     username = req.body.username;
     password = bcrypt.hashSync(req.body.password, 8);
@@ -20,4 +20,4 @@ signup = (req, res) => {
     });
 };
 
-module.exports = signup;
+module.exports = register;

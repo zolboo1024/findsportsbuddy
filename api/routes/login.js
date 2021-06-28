@@ -1,30 +1,19 @@
+//API /login
+//Zolboo
 var express = require('express');
 var router = express.Router();
-var passport = require('./../bin/passport');
-var db = require('./../bin/db-module');
-
+var loginController = require('./../controllers/loginController');
+var verifyToken = require('./../middleware/verifyToken');
 require('dotenv').config();
 
 //login router
-router.post('/', function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
-    if (username && password) {
-        db.query('SELECT id, username, password, type FROM userauth WHERE username=$1 AND password=$2', [username, password], function (error, results, fields) {
-            if (results.length > 0) {
-                req.session.loggedin = true;
-                req.session.username = username;
-                console.log('user verified');
-                res.redirect('/home');
-            } else {
-                res.send('Incorrect Username and/or Password!');
-            }
-            res.end();
-        });
-    } else {
-        res.send('Please enter Username and Password!');
-        res.end();
-    }
-});
+router.post('/', loginController);
 
+//test to check if the token can be verified
+router.get('/verifyToken', verifyToken, (req, res, next) => {
+    console.log(req.userId);
+    return res.status(200).send({
+        message: "token successfully verified"
+    });
+});
 module.exports = router;

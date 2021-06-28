@@ -1,3 +1,4 @@
+//where express is instantiated and defined
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -10,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
+var eventRouter = require('./routes/events');
 
 var cors = require('cors');
 var app = express();
@@ -31,6 +33,7 @@ app.use('/users', usersRouter);
 app.use('/firstAPI', firstAPIRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+app.use('/events', eventRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

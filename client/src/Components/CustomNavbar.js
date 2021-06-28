@@ -1,16 +1,34 @@
+//custom navbar
+//shows login/signup if the user is logged in i.e. if the token is saved
+//otherwise, shows logout
+//Zolboo
 import logo from './../logo.svg';
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
+import authHeader from './../auth/authHeader'
+import authService from './../auth/authService'
 
 class CustomNavbar extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loggedIn: false
+    }
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  callAPI() {
+  handleLogout() {
+    //delete the local token
+    authService.logout();
+    //change the state
+    this.setState({ loggedIn: false });
   }
-
   componentWillMount() {
+    var token = authHeader();
+    //if it returns the token
+    if (token["x-access-token"]) {
+      this.setState({ loggedIn: true });
+    }
   }
   render() {
     return (
@@ -41,16 +59,27 @@ class CustomNavbar extends Component {
           </div>
 
           <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <a class="button is-primary">
-                  <strong>Sign up</strong>
-                </a>
-                <a class="button is-light">
-                  Log in
+            {this.state.loggedIn == false &&
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-primary">
+                    <strong>Sign up</strong>
                   </a>
+                  <a class="button is-light" href="/login">
+                    Log in
+                  </a>
+                </div>
               </div>
-            </div>
+            }
+            {this.state.loggedIn &&
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-primary" onClick={this.handleLogout}>
+                    <strong>Logout</strong>
+                  </a>
+                </div>
+              </div>
+            }
           </div>
         </div>
       </div>
