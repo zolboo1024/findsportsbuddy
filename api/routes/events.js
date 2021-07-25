@@ -8,7 +8,7 @@ var verifyToken = require('./../middleware/verifyToken');
 require('dotenv').config();
 //gets all the events that was created
 router.get('/getAll', (req, res) => {
-    db.query('SELECT id, host, sport_type, location, start_time, end_time, participants, description FROM events',
+    db.query('SELECT id, host, sport_type, location, start_time, end_time, participants, num_participants, description FROM events',
         [], (error, results) => {
             if (error) {
                 return res.status(500).send({ message: error.message + " get all events" });
@@ -26,15 +26,16 @@ router.post('/create', verifyToken, (req, res) => {
     var start_time = req.body.start_time;
     var end_time = req.body.end_time;
     var participants = req.body.participants;
+    var num_participants = req.body.num_participants;
     var description = req.body.description;
     //if any data value is missing, the event can't be created
-    if (!host || !sport || !location || !start_time || !end_time || !participants || !description) {
+    if (!host || !sport || !location || !start_time || !end_time || !participants || !num_participants || !description) {
         return res.status(400).send({
             message: "missing parameters"
         });
     }
-    db.query('INSERT INTO events (host, sport_type, location, start_time, end_time, participants, description) values ($1, $2, $3, $4, $5, $6, $7)',
-        [host, sport, location, start_time, end_time, participants, description], (error, results) => {
+    db.query('INSERT INTO events (host, sport_type, location, start_time, end_time, participants, num_participants, description) values ($1, $2, $3, $4, $5, $6, $7, $8)',
+        [host, sport, location, start_time, end_time, participants, num_participants, description], (error, results) => {
             if (error) {
                 return res.status(500).send({ message: error.message + " createEvent" });
             }

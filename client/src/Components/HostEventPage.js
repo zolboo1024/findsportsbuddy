@@ -5,6 +5,7 @@ import 'bulma/css/bulma.min.css';
 import authService from '../auth/authService';
 import authHeader from '../auth/authHeader';
 import axios from 'axios';
+import Map from './Map';
 var CONFIG = require('./../config.json');
 
 class HostEventPage extends Component {
@@ -19,7 +20,8 @@ class HostEventPage extends Component {
             end_time: '',
             num_participants: '',
             description: '',
-            errorMessage: ''
+            errorMessage: '',
+            returnMessage: ''
         };
         this.handleSport = this.handleSport.bind(this);
         this.handleLocation = this.handleLocation.bind(this);
@@ -29,7 +31,7 @@ class HostEventPage extends Component {
         this.handleDescription = this.handleDescription.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleErrorMessage = this.handleErrorMessage.bind(this);
-
+        this.handleReturnMessage = this.handleReturnMessage.bind(this);
         this.checkInputs = this.checkInputs.bind(this);
     }
 
@@ -56,8 +58,8 @@ class HostEventPage extends Component {
         this.setState({ sport: event.target.value });
     }
 
-    handleLocation(event) {
-        this.setState({ location: event.target.value });
+    handleLocation(lat, lng) {
+        this.setState({ location: lat + " " + lng });
     }
 
     handleStartTime(event) {
@@ -94,7 +96,10 @@ class HostEventPage extends Component {
                 headers: authHeader()
             }).then(
                 () => {
-                    alert("event successfully created");
+                    //right now, go to the front page
+                    this.handleReturnMessage("Event successfully created!");
+                    this.props.history.push("/");
+                    window.location.reload();
                 },
                 error => {
                     const resMessage =
@@ -103,7 +108,7 @@ class HostEventPage extends Component {
                             error.response.data.message) ||
                         error.message ||
                         error.toString();
-                    this.handleErrorMessage(resMessage);
+                    this.handleReturnMesage(resMessage);
                 }
             );
         }
@@ -139,6 +144,11 @@ class HostEventPage extends Component {
         this.setState({ errorMessage: message });
     }
 
+    //display message that was returned after the submission
+    handleReturnMessage(message) {
+        this.setState({ returnMessage: message });
+    }
+
     render() {
         return (
             <div className="HostEvent">
@@ -146,6 +156,15 @@ class HostEventPage extends Component {
                     <div class="hero-body">
                         <div class="container has-text-centered">
                             <div class="column is-4 is-offset-4">
+                                {this.state.returnMessage !== '' &&
+                                    <div class="modal">
+                                        <div class="modal-background"></div>
+                                        <div class="modal-content">
+                                            {this.state.returnMessage}
+                                        </div>
+                                        <button class="modal-close is-large" aria-label="close"></button>
+                                    </div>
+                                }
                                 <h3 class="title has-text-black">Host a game or an activity</h3>
                                 <hr class="login-hr" />
                                 <p class="subtitle has-text-black">Please provide more information about your event</p>
@@ -167,7 +186,7 @@ class HostEventPage extends Component {
                                                 <input class="input" type="text" placeholder="Where would you like to play? Drop a pin or type the address" value={this.state.location} onChange={this.handleLocation} />
                                             </div>
                                         </div>
-
+                                        <Map handleLocation={this.handleLocation}></Map>
                                         <div class="field">
                                             <div class="control">
                                                 <input class="input" type="text" placeholder="When would you like to start playing?" value={this.state.start_time} onChange={this.handleStartTime} />

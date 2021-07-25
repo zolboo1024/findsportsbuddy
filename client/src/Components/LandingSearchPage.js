@@ -25,7 +25,7 @@ class LandingSearchPage extends Component {
                                         Sports
                                 </h1>
                                     <h2 class="subtitle has-text-black">
-                                        Find a partner for your activities near you
+                                        Find a partner for your activities for Zoloo
                                 </h2>
                                 </div>
                                 <div class="box is-rounded">
