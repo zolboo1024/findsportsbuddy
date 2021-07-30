@@ -60,6 +60,7 @@ class HostEventPage extends Component {
 
     handleLocation(lat, lng) {
         this.setState({ location: lat + " " + lng });
+        console.log(this.state.location);
     }
 
     handleStartTime(event) {

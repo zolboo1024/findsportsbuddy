@@ -6,6 +6,7 @@ import 'bulma/css/bulma.min.css';
 import LandingSearchPage from './Components/LandingSearchPage';
 import LoginPage from './Components/LoginPage';
 import HostEventPage from './Components/HostEventPage';
+import DisplayMap from './Components/DisplayMap';
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
         <Switch>
           <Route path='/hostEvent' component={HostEventPage} />
           <Route path='/login' component={LoginPage} />
+          <Route path='/sportsMap' component={DisplayMap} />
           <Route path='/' component={LandingSearchPage} />
         </Switch>
       </Router>
