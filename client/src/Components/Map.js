@@ -11,7 +11,7 @@ const mapContainerStyle = {
     height: "40vh"
 }
 const options = {
-    style: mapStyles,
+    styles: mapStyles,
     disableDefaultUI: true
 }
 const center = {
@@ -21,7 +21,6 @@ const center = {
 export default function Map(props) {
     //load the maps
     const libraries = ["places"];
-    console.log(CONFIG.JS_MAPS_KEY);
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: CONFIG.JS_MAPS_KEY,
         libraries

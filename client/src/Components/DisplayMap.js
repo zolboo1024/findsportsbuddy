@@ -13,7 +13,7 @@ const mapContainerStyle = {
     height: "100vh"
 }
 const options = {
-    style: mapStyles,
+    styles: mapStyles,
     disableDefaultUI: true
 }
 const center = {

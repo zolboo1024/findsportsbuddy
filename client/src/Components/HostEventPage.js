@@ -6,6 +6,7 @@ import authService from '../auth/authService';
 import authHeader from '../auth/authHeader';
 import axios from 'axios';
 import Map from './Map';
+import AskSport from './HostEventForm/AskSport';
 var CONFIG = require('./../config.json');
 
 class HostEventPage extends Component {
@@ -21,7 +22,8 @@ class HostEventPage extends Component {
             num_participants: '',
             description: '',
             errorMessage: '',
-            returnMessage: ''
+            returnMessage: '',
+            step: 1
         };
         this.handleSport = this.handleSport.bind(this);
         this.handleLocation = this.handleLocation.bind(this);
@@ -54,13 +56,12 @@ class HostEventPage extends Component {
         }
     }
 
-    handleSport(event) {
-        this.setState({ sport: event.target.value });
+    handleSport(newSport) {
+        this.setState({ sport: newSport });
     }
 
     handleLocation(lat, lng) {
         this.setState({ location: lat + " " + lng });
-        console.log(this.state.location);
     }
 
     handleStartTime(event) {
@@ -153,76 +154,10 @@ class HostEventPage extends Component {
     render() {
         return (
             <div className="HostEvent">
-                <section class="hero is-success is-fullheight">
-                    <div class="hero-body">
-                        <div class="container has-text-centered">
-                            <div class="column is-4 is-offset-4">
-                                {this.state.returnMessage !== '' &&
-                                    <div class="modal">
-                                        <div class="modal-background"></div>
-                                        <div class="modal-content">
-                                            {this.state.returnMessage}
-                                        </div>
-                                        <button class="modal-close is-large" aria-label="close"></button>
-                                    </div>
-                                }
-                                <h3 class="title has-text-black">Host a game or an activity</h3>
-                                <hr class="login-hr" />
-                                <p class="subtitle has-text-black">Please provide more information about your event</p>
-                                <div class="box">
-                                    {this.state.errorMessage &&
-                                        <div class="notification is-danger">
-                                            {this.state.errorMessage}
-                                        </div>
-                                    }
-                                    <form>
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="What would you like to play? i.e. Basketball" value={this.state.sport} onChange={this.handleSport} />
-                                            </div>
-                                        </div>
-
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="Where would you like to play? Drop a pin or type the address" value={this.state.location} onChange={this.handleLocation} />
-                                            </div>
-                                        </div>
-                                        <Map handleLocation={this.handleLocation}></Map>
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="When would you like to start playing?" value={this.state.start_time} onChange={this.handleStartTime} />
-                                            </div>
-                                        </div>
-
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="Where do you plan to finish?" value={this.state.end_time} onChange={this.handleEndTime} />
-                                            </div>
-                                        </div>
-
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="How many people will be there, including you?" value={this.state.num_participants} onChange={this.handleNumParticipants} />
-                                            </div>
-                                        </div>
-
-                                        <div class="field">
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="Anything else you'd like to share?" value={this.state.description} onChange={this.handleDescription} />
-                                            </div>
-                                        </div>
-                                        <button class="button is-block is-info is-fullwidth" onClick={this.handleSubmit}>Find a buddy <i class="fa fa-sign-in" aria-hidden="true"></i></button>
-                                    </form>
-                                </div>
-                                <p class="has-text-grey">
-                                    <a href="../">Sign Up</a> &nbsp;·&nbsp;
-                                        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                                        <a href="../">Need Help?</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {
+                    this.state.step == 1 &&
+                    <AskSport onSportChange={this.handleSport} key="1"></AskSport>
+                }
             </div>
         );
     }
