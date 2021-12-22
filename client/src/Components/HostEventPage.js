@@ -5,8 +5,9 @@ import 'bulma/css/bulma.min.css';
 import authService from '../auth/authService';
 import authHeader from '../auth/authHeader';
 import axios from 'axios';
-import Map from './Map';
+import AskLocation from './HostEventForm/AskLocation';
 import AskSport from './HostEventForm/AskSport';
+import AskTime from './HostEventForm/AskTime';
 var CONFIG = require('./../config.json');
 
 class HostEventPage extends Component {
@@ -19,8 +20,8 @@ class HostEventPage extends Component {
             location: '',
             start_time: '',
             end_time: '',
-            num_participants: '',
-            description: '',
+            num_participants: 1,
+            description: 'usercreated',
             errorMessage: '',
             returnMessage: '',
             step: 1
@@ -35,6 +36,9 @@ class HostEventPage extends Component {
         this.handleErrorMessage = this.handleErrorMessage.bind(this);
         this.handleReturnMessage = this.handleReturnMessage.bind(this);
         this.checkInputs = this.checkInputs.bind(this);
+        this.redirectToMaps = this.redirectToMaps.bind(this);
+        this.nextStep = this.nextStep.bind(this);
+        this.prevStep = this.prevStep.bind(this);
     }
 
     //first check if the user is logged in
@@ -55,7 +59,10 @@ class HostEventPage extends Component {
             window.location.reload();
         }
     }
-
+    redirectToMaps() {
+        this.props.history.push("/sportsMap");
+        window.location.reload();
+    }
     handleSport(newSport) {
         this.setState({ sport: newSport });
     }
@@ -64,12 +71,12 @@ class HostEventPage extends Component {
         this.setState({ location: lat + " " + lng });
     }
 
-    handleStartTime(event) {
-        this.setState({ start_time: event.target.value });
+    handleStartTime(newStartTime) {
+        this.setState({ start_time: newStartTime });
     }
 
-    handleEndTime(event) {
-        this.setState({ end_time: event.target.value });
+    handleEndTime(newEndTime) {
+        this.setState({ end_time: newEndTime });
     }
 
     handleNumParticipants(event) {
@@ -79,7 +86,15 @@ class HostEventPage extends Component {
     handleDescription(event) {
         this.setState({ description: event.target.value });
     }
-
+    //change which step it is on
+    nextStep(event) {
+        var next = this.state.step + 1;
+        this.setState({ step: next });
+    }
+    prevStep(event) {
+        var prev = this.state.step - 1;
+        this.setState({ step: prev });
+    }
     handleSubmit(event) {
         event.preventDefault();
         //if the form is completely filled out
@@ -87,6 +102,7 @@ class HostEventPage extends Component {
             //make backend req to create the event in the DB.
             //the second parameter is the body
             axios.post(CONFIG.API_URL + "/events/create", {
+                "userId": this.state.userId,
                 "sport": this.state.sport,
                 "location": this.state.location,
                 "start_time": this.state.start_time,
@@ -100,8 +116,6 @@ class HostEventPage extends Component {
                 () => {
                     //right now, go to the front page
                     this.handleReturnMessage("Event successfully created!");
-                    this.props.history.push("/");
-                    window.location.reload();
                 },
                 error => {
                     const resMessage =
@@ -110,7 +124,7 @@ class HostEventPage extends Component {
                             error.response.data.message) ||
                         error.message ||
                         error.toString();
-                    this.handleReturnMesage(resMessage);
+                    console.log(resMessage);
                 }
             );
         }
@@ -156,7 +170,33 @@ class HostEventPage extends Component {
             <div className="HostEvent">
                 {
                     this.state.step == 1 &&
-                    <AskSport onSportChange={this.handleSport} key="1"></AskSport>
+                    <AskSport
+                        onSportChange={this.handleSport}
+                        nextStep={this.nextStep}
+                        key="1">
+                    </AskSport>
+                }
+                {
+                    this.state.step == 2 &&
+                    <AskLocation
+                        handleLocation={this.handleLocation}
+                        nextStep={this.nextStep}
+                        prevStep={this.prevStep}
+                        key="2">
+                    </AskLocation>
+                }
+                {
+                    this.state.step == 3 &&
+                    <AskTime
+                        handleStartTime={this.handleStartTime}
+                        handleEndTime={this.handleEndTime}
+                        prevStep={this.prevStep}
+                        handleNumParticipants={this.handleNumParticipants}
+                        handleSubmit={this.handleSubmit}
+                        returnMessage={this.state.returnMessage}
+                        redirectToMaps={this.redirectToMaps}
+                        key="3">
+                    </AskTime>
                 }
             </div>
         );

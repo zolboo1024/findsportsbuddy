@@ -1,0 +1,10 @@
+#outerbox {
+    margin: auto;
+    width: 70%;
+    margin-bottom: 10px;
+}
+
+#submitbutton {
+    position: absolute;
+    right: 0px;
+}

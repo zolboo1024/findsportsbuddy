@@ -31,8 +31,17 @@ class AskSport extends Component {
         return (
             <div>
                 <CustomNavbar />
-                <h1 class="title has-text-centered">What sport would you like to play?</h1>
-                <div class="container">
+                <h1 class="title has-text-centered">What sport do you plan to play?</h1>
+                <div class="container m-auto">
+                    {
+                        this.state.selected &&
+                        <input
+                            type="image"
+                            src={window.location.origin + "/svgs/rightarrow.svg"}
+                            align="right"
+                            onClick={this.props.nextStep}>
+                        </input>
+                    }
                     <div id="cards" class="columns is-multiline is-mobile">
                         {
                             this.state.emojis &&
@@ -45,11 +54,11 @@ class AskSport extends Component {
                                                 const curURL = curCard.emojiUrl;
                                                 return <div class="container m-6">
                                                     <div class="card" key={curName} onClick={() => this.handleSelection(curName)}>
-                                                        <header class="card-header">
+                                                        <div class="card-header">
                                                             <p class="card-header-title">
                                                                 {curName}
                                                             </p>
-                                                        </header>
+                                                        </div>
                                                         <div class="card-image">
                                                             <figure class="image m-4">
                                                                 {this.state.selected == curName ?
@@ -69,12 +78,6 @@ class AskSport extends Component {
                         }
                     </div>
                 </div>
-                {
-                    this.state.selected &&
-                    <div>
-                        <img src={window.location.origin + "/svgs/rightarrow.svg"} alt="Placeholder image" align="right"></img>
-                    </div>
-                }
             </div>
         )
     }

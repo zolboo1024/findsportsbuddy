@@ -3,6 +3,8 @@ import { formatRelative } from 'date-fns';
 import mapStyles from './../mapStyles';
 import React from 'react';
 import CustomNavbar from '../CustomNavbar';
+import 'bulma/css/bulma.min.css';
+import './AskLocation.css';
 var CONFIG = require('./../../config.json');
 
 //function that returns the custom map
@@ -18,7 +20,7 @@ const center = {
     lat: 42.058406,
     lng: -88.125363
 }
-export default function Map(props) {
+export default function AskLocation(props) {
     //load the maps
     const libraries = ["places"];
     const { isLoaded, loadError } = useLoadScript({
@@ -31,8 +33,22 @@ export default function Map(props) {
     return (
         <div>
             <CustomNavbar></CustomNavbar>
-            <div class="is-fullheight-with-navbar">
-                <h1 class="title has-text-centered">Where do you plan to play?</h1>
+            <div class="hero is-fullheight-with-navbar">
+                <div class="box" id="question">
+                    <h1 class="title has-text-black">
+                        Where would you like to play?
+                    </h1>
+                </div>
+                {
+                    marker &&
+                    <div class="box" id="rightarrow">
+                        <input
+                            type="image"
+                            src={window.location.origin + "/svgs/rightarrow.svg"}
+                            onClick={props.nextStep}>
+                        </input>
+                    </div>
+                }
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
                     zoom={15}
