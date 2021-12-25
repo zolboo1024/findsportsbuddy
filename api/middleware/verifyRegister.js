@@ -9,7 +9,6 @@ checkDuplicateUsername = (req, res, next) => {
         if (error) {
             res.status(500).send({ message: error.message });
         }
-        //if the username already exists
         if (results.rows.length > 0) {
             res.status(400).send({
                 message: "username already in use"

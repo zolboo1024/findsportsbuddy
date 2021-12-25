@@ -169,7 +169,7 @@ class HostEventPage extends Component {
         return (
             <div className="HostEvent">
                 {
-                    this.state.step == 1 &&
+                    this.state.step === 1 &&
                     <AskSport
                         onSportChange={this.handleSport}
                         nextStep={this.nextStep}
@@ -177,7 +177,7 @@ class HostEventPage extends Component {
                     </AskSport>
                 }
                 {
-                    this.state.step == 2 &&
+                    this.state.step === 2 &&
                     <AskLocation
                         handleLocation={this.handleLocation}
                         nextStep={this.nextStep}
@@ -186,7 +186,7 @@ class HostEventPage extends Component {
                     </AskLocation>
                 }
                 {
-                    this.state.step == 3 &&
+                    this.state.step === 3 &&
                     <AskTime
                         handleStartTime={this.handleStartTime}
                         handleEndTime={this.handleEndTime}

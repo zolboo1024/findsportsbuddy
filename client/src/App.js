@@ -7,8 +7,8 @@ import LandingSearchPage from './Components/LandingSearchPage';
 import LoginPage from './Components/LoginPage';
 import HostEventPage from './Components/HostEventPage';
 import DisplayMap from './Components/DisplayMap';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
-import AskSport from './Components/HostEventForm/AskSport';
+import history from './history';
+import { Switch, Router, Route } from 'react-router-dom';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route path='/hostEvent' component={HostEventPage} />
           <Route path='/login' component={LoginPage} />

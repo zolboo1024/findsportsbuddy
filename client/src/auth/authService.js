@@ -30,10 +30,14 @@ class authService {
     }
 
     register(username, password) {
-        return axios.post(API_URL + "register", {
-            username,
-            password
-        });
+        return axios
+            .post(API_URL + "register", {
+                username,
+                password
+            })
+            .then(response => {
+                return response.data
+            });
     }
 
     getCurrentUser() {

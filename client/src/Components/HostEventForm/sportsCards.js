@@ -2,73 +2,73 @@ const sportsCards = [
     [
         {
             "name": "Running",
-            "emojiUrl": "/emojis/running.png"
+            "emojiUrl": "/emojis/Running.png"
         },
         {
             "name": "Tennis",
-            "emojiUrl": "/emojis/tennis.png"
+            "emojiUrl": "/emojis/Tennis.png"
         },
         {
             "name": "Volleyball",
-            "emojiUrl": "/emojis/volleyball.png"
+            "emojiUrl": "/emojis/Volleyball.png"
         },
         {
             "name": "Surfing",
-            "emojiUrl": "/emojis/surfing.png"
+            "emojiUrl": "/emojis/Surfing.png"
         }
     ],
     [
         {
             "name": "Basketball",
-            "emojiUrl": "/emojis/basketball.png"
+            "emojiUrl": "/emojis/Basketball.png"
         },
         {
             "name": "Climbing",
-            "emojiUrl": "/emojis/climbing.png"
+            "emojiUrl": "/emojis/Climbing.png"
         },
         {
             "name": "Baseball",
-            "emojiUrl": "/emojis/baseball.png"
+            "emojiUrl": "/emojis/Baseball.png"
         },
         {
             "name": "Swimming",
-            "emojiUrl": "/emojis/swimming.png"
+            "emojiUrl": "/emojis/Swimming.png"
         }
     ],
     [
         {
             "name": "Biking",
-            "emojiUrl": "/emojis/biking.png"
+            "emojiUrl": "/emojis/Biking.png"
         },
         {
             "name": "Football",
-            "emojiUrl": "/emojis/football.png"
+            "emojiUrl": "/emojis/Football.png"
         },
         {
             "name": "Golfing",
-            "emojiUrl": "/emojis/golfing.png"
+            "emojiUrl": "/emojis/Golfing.png"
         },
         {
             "name": "Badminton",
-            "emojiUrl": "/emojis/badminton.png"
+            "emojiUrl": "/emojis/Badminton.png"
         }
     ],
     [
         {
             "name": "Soccer",
-            "emojiUrl": "/emojis/soccer.png"
+            "emojiUrl": "/emojis/Soccer.png"
         },
         {
             "name": "Skateboarding",
-            "emojiUrl": "/emojis/skateboarding.png"
+            "emojiUrl": "/emojis/Skateboarding.png"
         },
         {
             "name": "Skiing",
-            "emojiUrl": "/emojis/skiing.png"
+            "emojiUrl": "/emojis/Skiing.png"
         },
         {
             "name": "Other",
-            "emojiUrl": "/emojis/other.png"
+            "emojiUrl": "/emojis/Other.png"
         }
     ]
 ]

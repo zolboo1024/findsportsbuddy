@@ -1,81 +1,94 @@
-import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
 import './LandingSearchPage.css';
 import CustomNavbar from './CustomNavbar';
-import axios from 'axios';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import React, { useState } from 'react';
+import Geocode from "react-geocode";
+import history from './../history';
 var CONFIG = require('./../config.json');
-class LandingSearchPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            zipcode: ''
+
+function submitSearch(address) {
+    Geocode.setApiKey(CONFIG.PLACES_KEy);
+    // Get latitude & longitude from address.
+    Geocode.fromAddress(address.value.description).then(
+        (response) => {
+            const { lat, lng } = response.results[0].geometry.location;
+            const selectedLocation = lat + " " + lng
+            localStorage.setItem("selectedLocation", selectedLocation);
+            // console.log(address.label)
+            // console.log(lat + " " + lng)
+            changePage('/sportsMap', lat, lng);
+        },
+        (error) => {
+            console.error(error);
         }
-        this.handleZipcodeChange = this.handleZipcodeChange.bind(this);
-        this.submitSearch = this.submitSearch.bind(this);
-        this.changePage = this.changePage.bind(this);
-    }
+    );
+}
 
-    handleZipcodeChange(event) {
-        this.setState({ zipcode: event.target.value });
-        console.log(event.target.value);
-    }
+function changePage(newUrl, lat, lng) {
+    history.push(newUrl + "?lat=" + lat + "&lng=" + lng);
+    window.location.reload();
+}
 
-    submitSearch() {
-        var lat = '';
-        var lng = '';
-        var curzip = this.state.zipcode;
-        axios.get("https://maps.googleapis.com/maps/api/geocode/json?key=" + CONFIG.JS_MAPS_KEY + "&components=postal_code:" + curzip).then(
-            (events) => {
-                console.log(events);
-                //this.changePage("/sportsMap?lat"=)
-            }
+function searchButton(selected) {
+    if (selected) {
+        return (
+            <a className="button is-info is-rounded is-link"
+                onClick={function () { submitSearch(selected) }}>
+                Search
+            </a>
         )
     }
-
-    changePage(newUrl) {
-        this.props.history.push(newUrl);
-        window.location.reload();
-    }
-    componentWillMount() {
-    }
-    render() {
+    else {
         return (
-            <div className="landingSearchPage">
-                <CustomNavbar />
-                <section class="hero is-info is-fullheight-with-navbar has-bg-img">
-                    <div class="hero-body">
-                        <div class="container has-text-centered">
-                            <div class="column is-6 is-offset-3">
-                                <div class="box">
-                                    <h1 class="title has-text-black">
-                                        Sports
-                                    </h1>
-                                    <h2 class="subtitle has-text-black">
-                                        Find a partner for your activities
+            <a className="button is-info is-rounded is-link" disabled={true}>
+                Search
+            </a>
+        )
+    }
+}
+
+export default function LandingSearchPage(props) {
+    const [selected, setSelected] = useState(null);
+    if (!localStorage.getItem("eventCreated")) {
+        console.log("saving event cookie")
+        localStorage.setItem("eventCreated", "false")
+    }
+    return (
+        <div className="landingSearchPage">
+            <CustomNavbar />
+            <section className="hero is-info is-fullheight-with-navbar has-bg-img">
+                <div className="hero-body">
+                    <div className="container has-text-centered">
+                        <div className="column is-6 is-offset-3">
+                            <div className="box">
+                                <h1 className="title has-text-black">
+                                    Sports
+                                </h1>
+                                <h2 className="subtitle has-text-black">
+                                    Find a partner for your activities
                                 </h2>
-                                </div>
-                                <div class="box is-rounded">
-                                    Enter your location to find nearby partners
-                                    <div class="field is-grouped">
-                                        <p class="control is-expanded">
-                                            <input class="input is-rounded" type="text" placeholder="99999" onChange={this.handleZipcodeChange}>
-                                            </input>
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-info is-rounded is-link"
-                                                onClick={this.submitSearch}>
-                                                Search
-                                            </a>
-                                        </p>
+                            </div>
+                            <div className="box is-rounded">
+                                Enter your location to find nearby partners
+                                <div className="field is-grouped">
+                                    <div className="control is-expanded">
+                                        <GooglePlacesAutocomplete
+                                            className="control is-expanded"
+                                            apiKey={CONFIG.PLACES_KEy}
+                                            selectProps={{
+                                                selected,
+                                                onChange: setSelected,
+                                            }}
+                                        />
                                     </div>
+                                    {searchButton(selected)}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
-        );
-    }
+                </div>
+            </section>
+        </div>
+    );
 }
-
-export default LandingSearchPage;

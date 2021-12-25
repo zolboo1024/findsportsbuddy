@@ -1,12 +1,14 @@
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
-import { formatRelative } from 'date-fns';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import mapStyles from './../mapStyles';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomNavbar from '../CustomNavbar';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import 'bulma/css/bulma.min.css';
 import './AskLocation.css';
+import Geocode from "react-geocode";
+import { parse } from 'dotenv';
 var CONFIG = require('./../../config.json');
-
+Geocode.setApiKey(CONFIG.PLACES_KEy);
 //function that returns the custom map
 const mapContainerStyle = {
     width: "100vw",
@@ -16,11 +18,9 @@ const options = {
     styles: mapStyles,
     disableDefaultUI: true
 }
-const center = {
-    lat: 42.058406,
-    lng: -88.125363
-}
 export default function AskLocation(props) {
+    const [selected, setSelected] = useState(null);
+    const [center, setCenter] = useState({ lat: 38.8977, lng: 77.0365 })
     //load the maps
     const libraries = ["places"];
     const { isLoaded, loadError } = useLoadScript({
@@ -28,22 +28,60 @@ export default function AskLocation(props) {
         libraries
     });
     const [marker, setMarker] = React.useState();
+    useEffect(() => {
+        const savedLocation = localStorage.getItem("selectedLocation");
+        const split = savedLocation.split(' ')
+        setCenter({
+            lat: parseFloat(split[0]),
+            lng: parseFloat(split[1])
+        })
+    }, []);
+    function handleAddressChange(event) {
+        const address = event.value.description;
+        // Get latitude & longitude from address.
+        Geocode.fromAddress(address).then(
+            (response) => {
+                const { lat, lng } = response.results[0].geometry.location;
+                const selectedLocation = lat + " " + lng
+                localStorage.setItem("selectedLocation", selectedLocation);
+                setCenter({
+                    lat: parseFloat(lat),
+                    lng: parseFloat(lng)
+                })
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
+    }
     if (loadError) return "LoadError";
     if (!isLoaded) return "Loading";
     return (
         <div>
             <CustomNavbar></CustomNavbar>
-            <div class="hero is-fullheight-with-navbar">
-                <div class="box" id="question">
+            <div className="hero is-fullheight-with-navbar">
+                <div className="box has-text-black" id="question">
                     <h1 class="title has-text-black">
                         Where would you like to play?
                     </h1>
+                    <h3>
+                        Search for a specific location:
+                    </h3>
+                    <GooglePlacesAutocomplete
+                        apiKey={CONFIG.PLACES_KEy}
+                        selectProps={{
+                            selected,
+                            onChange: handleAddressChange,
+                        }}
+                    />
+
                 </div>
                 {
                     marker &&
                     <div class="box" id="rightarrow">
                         <input
                             type="image"
+                            alt="right arrow"
                             src={window.location.origin + "/svgs/rightarrow.svg"}
                             onClick={props.nextStep}>
                         </input>

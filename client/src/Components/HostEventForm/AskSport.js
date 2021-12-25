@@ -16,7 +16,7 @@ class AskSport extends Component {
     //toggle the selection
     handleSelection(sport) {
         //if already selected, unselect it
-        if (this.state.selected != sport) {
+        if (this.state.selected !== sport) {
             this.setState({ selected: sport });
         }
         else {
@@ -37,6 +37,7 @@ class AskSport extends Component {
                         this.state.selected &&
                         <input
                             type="image"
+                            alt="selected"
                             src={window.location.origin + "/svgs/rightarrow.svg"}
                             align="right"
                             onClick={this.props.nextStep}>
@@ -61,10 +62,10 @@ class AskSport extends Component {
                                                         </div>
                                                         <div class="card-image">
                                                             <figure class="image m-4">
-                                                                {this.state.selected == curName ?
-                                                                    <img src={window.location.origin + "/svgs/check.svg"} alt="Placeholder image"></img>
+                                                                {this.state.selected === curName ?
+                                                                    <img src={window.location.origin + "/svgs/check.svg"} alt="Checked"></img>
                                                                     :
-                                                                    <img src={window.location.origin + curURL} alt="Placeholder image"></img>
+                                                                    <img src={window.location.origin + curURL} alt="Checked"></img>
                                                                 }
                                                             </figure>
                                                         </div>
