@@ -1,10 +1,10 @@
 //custom navbar
 //shows login/signup if the user is logged in i.e. if the token is saved
 //otherwise, shows logout
-//Zolboo
-import logo from './../logo.svg';
+//Author: Zolboo Erdenebaatar
 import { useEffect, useState } from 'react';
 import 'bulma/css/bulma.min.css';
+import './CustomNavbar.css'
 import authHeader from './../auth/authHeader'
 import authService from './../auth/authService'
 
@@ -82,27 +82,23 @@ export default function LandingSearchPage(props) {
   return (
     <div className="Navbar">
       <div className="navbar" role="navigation" aria-label="main navigation">
-        <div className="navbar-brand">
-          <a className="navbar-item" href="/">
-            <img src={logo} alt="logo" width="112" height="28"></img>
-          </a>
-
+        {/* {<div className="navbar-brand">
           <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
           </a>
-        </div>
+        </div>} */}
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item">
+            <a className="navbar-item" id="logo" href="/">
               Home
             </a>
 
-            <a className="navbar-item">
+            {/* {<a className="navbar-item">
               About
-            </a>
+            </a>} */}
           </div>
         </div>
 
@@ -121,36 +117,32 @@ export default function LandingSearchPage(props) {
                   {errorMessage}
                 </span>
               }
-              <a>
-                <div class="field m-2">
-                  <div class="control">
-                    <input class="input is-normal" type="username" placeholder="Your Username" onChange={handleUsername} />
-                  </div>
+              <div className="field m-2">
+                <div className="control">
+                  <input className="input is-normal" type="username" placeholder="Your Username" onChange={handleUsername} />
                 </div>
-              </a>
-              <a>
-                <div class="field m-2">
-                  <div class="control">
-                    <input class="input is-normal" type="password" placeholder="Your Password" onChange={handlePassword} />
-                  </div>
+              </div>
+              <div className="field m-2">
+                <div className="control">
+                  <input className="input is-normal" type="password" placeholder="Your Password" onChange={handlePassword} />
                 </div>
-              </a>
+              </div>
               <div className="buttons">
-                <a className="button is-primary" onClick={handleSignup}>
+                <div className="button is-primary" onClick={handleSignup}>
                   <strong>Sign up</strong>
-                </a>
-                <a className="button is-light" href="/login" onClick={handleLogin}>
+                </div>
+                <div className="button is-light" onClick={handleLogin}>
                   Log in
-                </a>
+                </div>
               </div>
             </div>
           }
           {loggedIn &&
             <div className="navbar-item">
               <div className="buttons">
-                <a className="button is-primary" onClick={handleLogout}>
+                <div className="button is-primary" onClick={handleLogout}>
                   <strong>Logout</strong>
-                </a>
+                </div>
               </div>
             </div>
           }

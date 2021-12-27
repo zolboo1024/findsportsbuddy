@@ -1,5 +1,7 @@
 //React page to host a sporting event
-//Zolboo
+//This step contains multiple children
+//each of which asks the user for a specific detail about the event
+//Author: Zolboo Erdenebaatar
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
 import authService from '../auth/authService';
@@ -8,6 +10,7 @@ import axios from 'axios';
 import AskLocation from './HostEventForm/AskLocation';
 import AskSport from './HostEventForm/AskSport';
 import AskTime from './HostEventForm/AskTime';
+import CustomFooter from './CustomFooter';
 var CONFIG = require('./../config.json');
 
 class HostEventPage extends Component {
@@ -43,10 +46,10 @@ class HostEventPage extends Component {
 
     //first check if the user is logged in
     //if not, we cannot show this page
-    componentWillMount() {
+    componentDidMount() {
         var user = authService.getCurrentUser();
         //if it returns the token
-        if (user["accessToken"]) {
+        if (user && user["accessToken"]) {
             var id = user["id"];
             this.setState({
                 loggedIn: true,
@@ -54,13 +57,15 @@ class HostEventPage extends Component {
             });
         }
         else {
-            //if not logged in, redirect to the login page
-            this.props.history.push("/login");
-            window.location.reload();
+            //if not logged in, set the user id to anonymous
+            this.setState({
+                userId: "Anonymous"
+            })
         }
     }
     redirectToMaps() {
-        this.props.history.push("/sportsMap");
+        var loco = this.state.location.split(' ');
+        this.props.history.push("/sportsMap?lat=" + loco[0] + "&lng=" + loco[1]);
         window.location.reload();
     }
     handleSport(newSport) {
@@ -124,7 +129,7 @@ class HostEventPage extends Component {
                             error.response.data.message) ||
                         error.message ||
                         error.toString();
-                    console.log(resMessage);
+                    this.handleReturnMessage(resMessage);;
                 }
             );
         }
@@ -198,6 +203,7 @@ class HostEventPage extends Component {
                         key="3">
                     </AskTime>
                 }
+                <CustomFooter />
             </div>
         );
     }

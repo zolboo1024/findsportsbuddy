@@ -1,5 +1,5 @@
 //creates a JWT from username and PW so that it can be verified
-//Zolboo
+//Author: Zolboo Erdenebaatar
 const db = require('../bin/db-module');
 require('dotenv').config();
 

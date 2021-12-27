@@ -1,5 +1,5 @@
-//API /login
-//Zolboo
+//API that handles /login requests
+//Author: Zolboo Erdenebaatar
 var express = require('express');
 var router = express.Router();
 var loginController = require('./../controllers/loginController');

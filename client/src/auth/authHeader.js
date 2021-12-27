@@ -1,3 +1,6 @@
+//Get the access token from local storage and return it
+//Author: Zolboo Erdenebaatar
+
 export default function authHeader() {
     const user = JSON.parse(localStorage.getItem('user'));
 

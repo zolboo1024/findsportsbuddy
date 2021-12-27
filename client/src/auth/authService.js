@@ -1,10 +1,11 @@
 //Service class that does Login and Register requests
 //and save the returned info into a user item in the
 //local storage including the user id and accesstoken
-//Zolboo
-import axios from "axios";
 
-const API_URL = "http://localhost:7000/";
+//Author: Zolboo Erdenebaatar
+import axios from "axios";
+var CONFIG = require('./../config.json');
+const API_URL = CONFIG.API_URL;
 
 class authService {
     login(username, password) {

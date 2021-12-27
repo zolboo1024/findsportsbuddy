@@ -1,3 +1,6 @@
+//The form of the hostEvent page that asks for the users location
+//Author: Zolboo Erdenebaatar
+
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import mapStyles from './../mapStyles';
 import React, { useEffect, useState } from 'react';
@@ -6,7 +9,6 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import 'bulma/css/bulma.min.css';
 import './AskLocation.css';
 import Geocode from "react-geocode";
-import { parse } from 'dotenv';
 var CONFIG = require('./../../config.json');
 Geocode.setApiKey(CONFIG.PLACES_KEy);
 //function that returns the custom map
@@ -22,10 +24,8 @@ export default function AskLocation(props) {
     const [selected, setSelected] = useState(null);
     const [center, setCenter] = useState({ lat: 38.8977, lng: 77.0365 })
     //load the maps
-    const libraries = ["places"];
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: CONFIG.JS_MAPS_KEY,
-        libraries
+        googleMapsApiKey: CONFIG.JS_MAPS_KEY
     });
     const [marker, setMarker] = React.useState();
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function AskLocation(props) {
                 const { lat, lng } = response.results[0].geometry.location;
                 const selectedLocation = lat + " " + lng
                 localStorage.setItem("selectedLocation", selectedLocation);
-                setCenter({
+                setSelected({
                     lat: parseFloat(lat),
                     lng: parseFloat(lng)
                 })
@@ -61,8 +61,8 @@ export default function AskLocation(props) {
             <CustomNavbar></CustomNavbar>
             <div className="hero is-fullheight-with-navbar">
                 <div className="box has-text-black" id="question">
-                    <h1 class="title has-text-black">
-                        Where would you like to play?
+                    <h1 className="title has-text-black">
+                        Where would you like to play? (Drop a pin)
                     </h1>
                     <h3>
                         Search for a specific location:
@@ -78,7 +78,7 @@ export default function AskLocation(props) {
                 </div>
                 {
                     marker &&
-                    <div class="box" id="rightarrow">
+                    <div className="box" id="rightarrow">
                         <input
                             type="image"
                             alt="right arrow"

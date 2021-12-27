@@ -1,5 +1,5 @@
 //API for /events that would handle all the event-related info
-//Zolboo
+//Author: Zolboo Erdenebaatar
 var express = require('express');
 var router = express.Router();
 var db = require('./../bin/db-module');
@@ -18,9 +18,9 @@ router.get('/getAll', (req, res) => {
         });
 });
 //authentication required to create events
-router.post('/create', verifyToken, (req, res) => {
+router.post('/create', (req, res) => {
     //save the required parameters
-    var host = req.userId;
+    var host = req.body.userId;
     var sport = req.body.sport;
     var location = req.body.location;
     var start_time = req.body.start_time;

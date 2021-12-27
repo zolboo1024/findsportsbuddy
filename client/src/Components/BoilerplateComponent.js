@@ -1,3 +1,7 @@
+//Boilerplate code used to initiate other
+//components
+//Author: Zolboo Erdenebaatar
+
 import './../App.css';
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';

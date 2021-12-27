@@ -1,5 +1,7 @@
-//Zolboo
-//third step in the multi page form
+//third step in the multi page form that asks user when they would like to play
+//and how many players there are
+//Author: Zolboo Erdenebaatar
+
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
 import CustomNavbar from '../CustomNavbar';
@@ -59,34 +61,42 @@ class AskSport extends Component {
                 <CustomNavbar></CustomNavbar>
                 {
                     this.props.returnMessage &&
-                    <div class="modal is-active">
-                        <div class="modal-background"></div>
-                        <div class="modal-content">
-                            {this.props.returnMessage}
+                    <div>
+                        <div className="modal is-active">
+                            <div className="modal-background"></div>
+                            <div className="modal-card">
+                                <header className="modal-card-head">
+                                    <p className="modal-card-title">{this.props.returnMessage}</p>
+                                    <button className="delete" aria-label="close" onClick={this.props.redirectToMaps}></button>
+                                </header>
+                                <section className="modal-card-body">
+                                    Your event is now visible to other users
+                                </section>
+                                <footer className="modal-card-foot">
+                                    <button className="button is-success" onClick={this.props.redirectToMaps}>Go back</button>
+                                </footer>
+                            </div>
                         </div>
-                        <button class="modal-close is-large"
-                            aria-label="close" onClick={this.props.redirectToMaps}>
-                        </button>
                     </div>
                 }
-                <h1 class="title has-text-centered">Tell us a little more</h1>
-                <div class="box pb-6" id="outerbox">
+                <h1 className="title has-text-centered">Tell us a little more</h1>
+                <div className="box pb-6" id="outerbox">
                     {this.state.error &&
-                        <div class="notification is-danger">
+                        <div className="notification is-danger">
                             {this.state.error}
                         </div>
                     }
-                    <h1 class="title is-4 has-text-centered">When do you plan to play?</h1>
-                    <h2 class="subtitle has-text-centered">From</h2>
-                    <div class="box" id="outerbox">
+                    <h1 className="title is-4 has-text-centered">When do you plan to play?</h1>
+                    <h2 className="subtitle has-text-centered">From</h2>
+                    <div className="box innerbox">
                         <DateTimePicker
                             id="timepicker"
                             value={this.state.startTime}
                             onChange={this.handleStartTime}>
                         </DateTimePicker>
                     </div>
-                    <h2 class="subtitle has-text-centered">To</h2>
-                    <div class="box" id="outerbox">
+                    <h2 className="subtitle has-text-centered">To</h2>
+                    <div className="box innerbox">
                         <DateTimePicker
                             id="timepicker"
                             value={this.state.endTime}
@@ -94,30 +104,34 @@ class AskSport extends Component {
                         </DateTimePicker>
                     </div>
                 </div>
-                <div class="box" id="outerbox">
+                <div className="box" id="outerbox">
                     {this.state.error &&
-                        <div class="notification is-danger">
+                        <div className="notification is-danger">
                             {this.state.error}
                         </div>
                     }
-                    <h1 class="title is-4 has-text-centered">How many people will be there?</h1>
-                    <div class="select" onChange={this.handleNumParticipants}>
-                        <select>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5+</option>
-                        </select>
+                    <h1 className="title is-4 has-text-centered">How many people will be there?</h1>
+                    <div id="outerSelect">
+                        <div className="select" onChange={this.handleNumParticipants}>
+                            <select className="innerSelect">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5+</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 {!this.state.error &&
-                    <button
-                        class="button is-success is-rounded m-4"
-                        id="submitbutton"
-                        onClick={this.props.handleSubmit}>
-                        Submit
-                    </button>
+                    <div className="center_stuff">
+                        <button
+                            className="button is-success is-rounded m-4"
+                            id="submitbutton"
+                            onClick={this.props.handleSubmit}>
+                            Submit
+                        </button>
+                    </div>
                 }
             </div>
         )

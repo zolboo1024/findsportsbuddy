@@ -1,5 +1,5 @@
 //test example API
-//Zolboo
+//Author: Zolboo Erdenebaatar
 var express = require('express');
 var router = express.Router();
 var db = require('./../bin/db-module');

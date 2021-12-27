@@ -1,3 +1,5 @@
+//exports the db so that it can be used in other modules
+//Author: Zolboo Erdenebaatar
 require('dotenv').config();
 //set up the connection to the DB
 const Pool = require('pg').Pool;

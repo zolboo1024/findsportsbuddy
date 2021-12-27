@@ -1,10 +1,9 @@
 //Entry point for the React app
-//Zolboo
+//Author: Zolboo Erdenebaatar
 import './App.css';
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
 import LandingSearchPage from './Components/LandingSearchPage';
-import LoginPage from './Components/LoginPage';
 import HostEventPage from './Components/HostEventPage';
 import DisplayMap from './Components/DisplayMap';
 import history from './history';
@@ -20,7 +19,6 @@ class App extends Component {
       <Router history={history}>
         <Switch>
           <Route path='/hostEvent' component={HostEventPage} />
-          <Route path='/login' component={LoginPage} />
           <Route path='/sportsMap' component={DisplayMap} />
           <Route path='/' component={LandingSearchPage} />
         </Switch>

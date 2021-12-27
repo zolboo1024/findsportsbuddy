@@ -1,3 +1,6 @@
+//Verify that the user is registered
+//Author: Zolboo Erdenebaatar
+
 const db = require('./../bin/db-module');
 
 checkDuplicateUsername = (req, res, next) => {

@@ -1,6 +1,10 @@
+//The first page served to the user when
+//the user visits a page
+//Author: Zolboo Erdenebaatar
 import 'bulma/css/bulma.min.css';
 import './LandingSearchPage.css';
 import CustomNavbar from './CustomNavbar';
+import CustomFooter from './CustomFooter';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import React, { useState } from 'react';
 import Geocode from "react-geocode";
@@ -33,22 +37,23 @@ function changePage(newUrl, lat, lng) {
 function searchButton(selected) {
     if (selected) {
         return (
-            <a className="button is-info is-rounded is-link"
+            <div className="button is-info is-rounded is-link"
                 onClick={function () { submitSearch(selected) }}>
                 Search
-            </a>
+            </div>
         )
     }
     else {
         return (
-            <a className="button is-info is-rounded is-link" disabled={true}>
+            <div className="button is-info is-rounded is-link" disabled={true}>
                 Search
-            </a>
+            </div>
         )
     }
 }
 
 export default function LandingSearchPage(props) {
+    //set the chosen address as a component state
     const [selected, setSelected] = useState(null);
     if (!localStorage.getItem("eventCreated")) {
         console.log("saving event cookie")
@@ -63,7 +68,7 @@ export default function LandingSearchPage(props) {
                         <div className="column is-6 is-offset-3">
                             <div className="box">
                                 <h1 className="title has-text-black">
-                                    Sports
+                                    Sports Partner Finder
                                 </h1>
                                 <h2 className="subtitle has-text-black">
                                     Find a partner for your activities
@@ -89,6 +94,7 @@ export default function LandingSearchPage(props) {
                     </div>
                 </div>
             </section>
+            <CustomFooter />
         </div>
     );
 }

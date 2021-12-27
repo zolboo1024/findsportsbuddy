@@ -1,10 +1,13 @@
 //display this map when users go to /sportsMap
 //does not need to be logged in to see this
+//shows all the current events registered nearby
+//Author: Zolboo Erdenebaatar
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import mapStyles from './mapStyles';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import CustomNavbar from './CustomNavbar';
+import CustomFooter from './CustomFooter';
 import './DisplayMap.css';
 var CONFIG = require('./../config.json');
 
@@ -25,8 +28,10 @@ export default function DisplayMap(props) {
         googleMapsApiKey: CONFIG.JS_MAPS_KEY,
         libraries
     });
+    //markers = events to show up on the map
     var [markers, setMarker] = React.useState();
     const [selected, setSelected] = React.useState();
+    //load the center
     const params = new URLSearchParams(props.location.search);
     var center = { lat: 38.8977, lng: 77.0365 }
     if (localStorage.getItem("selectedLocation")) {
@@ -43,12 +48,14 @@ export default function DisplayMap(props) {
             lng: parseFloat(params.get("lng"))
         }
     }
+    //import the active events
     useEffect(() => {
         axios.get(CONFIG.API_URL + '/events/getAll').then(
             (events) => {
                 var newMarkers = events.data.filter(
+                    //filter out the old events
                     function (event) {
-                        const eventTime = new Date(event.start_time).getTime();
+                        const eventTime = new Date(event.end_time).getTime();
                         if (eventTime <= Date.now()) {
                             return false;
                         }
@@ -60,6 +67,7 @@ export default function DisplayMap(props) {
                         const lon1 = center.lng;
                         const lat2 = parseFloat(loc[0]);
                         const lon2 = parseFloat(loc[1]);
+                        //filter out the events that are too far positionally
                         var R = 6371; // Radius of the earth in km
                         var dLat = deg2rad(lat2 - lat1);  // deg2rad below
                         var dLon = deg2rad(lon2 - lon1);
@@ -70,7 +78,6 @@ export default function DisplayMap(props) {
                             ;
                         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                         var d = R * c; // Distance in km
-                        console.log(d);
                         if (d > 5) {
                             return false;
                         }
@@ -78,17 +85,22 @@ export default function DisplayMap(props) {
                     }
                 ).map(
                     function (event) {
+                        //map the events to markers
                         var loc = event.location.split(" ");
                         var curLat = parseFloat(loc[0]);
                         var curLng = parseFloat(loc[1]);
                         var starttime = (new Date(event.start_time).toTimeString()).substring(0, 5);
                         var endtime = (new Date(event.end_time).toTimeString()).substring(0, 5);
+                        var thisDate = event.start_time.substring(0, 10);
+                        var host = event.host;
                         return {
                             id: event.id,
                             lat: curLat,
+                            creator: host,
                             lng: curLng,
                             sportName: event.sport_type,
                             startTime: starttime,
+                            date: thisDate,
                             endTime: endtime,
                             numParticipants: event.num_participants
                         };
@@ -100,16 +112,73 @@ export default function DisplayMap(props) {
     }, []);
     if (loadError) return "LoadError";
     if (!isLoaded) return "Loading";
-    console.log(localStorage.getItem("selectedLocation"))
     return (
         <div>
             <CustomNavbar></CustomNavbar>
             <div className="is-fullheight-with-navbar">
-                <h1 className="title has-text-centered">Join These Activities Near You (or <a href="/hostEvent">Host Your Own One)</a></h1>
-                <h2 className="title has-text-centered">Click on the emoji for more information</h2>
+                <h1 className="title has-text-centered">Join These Activities Near You (or <a href="/hostEvent">Host Your Own)</a></h1>
+                <h2 className="subtitle has-text-centered">Click on the emoji for more information</h2>
                 <div className="columns">
-                    <div className="column is-one-third">
-
+                    <div className="column is-one-third scrollable">
+                        {
+                            markers &&
+                            markers.map(
+                                function (marker) {
+                                    return <div className="box moreinfobox"
+                                        onMouseEnter={() => { setSelected(marker) }}
+                                        onMouseLeave={() => { setSelected(null) }}
+                                        key={marker.id}
+                                    >
+                                        <div className="columns">
+                                            <div className="column is-one-third">
+                                                <img src={"/emojis/" + marker.sportName + ".png"} alt="sportemoji" />
+                                            </div>
+                                            <div className="column">
+                                                <div>
+                                                    <span className="is-size-4">
+                                                        <span className="has-text-weight-semibold">What: </span>
+                                                        {marker.sportName}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="is-size-5">
+                                                        <span className="has-text-weight-semibold">When: </span>
+                                                        {marker.startTime}-{marker.endTime} ({marker.date})
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="is-size-5">
+                                                        <span className="has-text-weight-semibold">How many people: </span>
+                                                        {marker.numParticipants}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span className="is-size-5">
+                                                        <span className="has-text-weight-semibold">Created by: </span>
+                                                        {marker.creator}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            )
+                        }
+                        {
+                            (!markers || markers.length === 0) &&
+                            < div className="box is-size-4 has-text-weight-semibold has-text-danger no-event-box">
+                                Hmmmmm... It looks like there is no sport event near you.
+                                However, you can host your own here:
+                                <div className="outerHostEvent">
+                                    <a
+                                        className="button is-success is-large is-rounded m-4"
+                                        id="neweventbutton"
+                                        href="/hostEvent">
+                                        Host your own event
+                                    </a>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div className="column">
                         <div className="container container-extra">
@@ -141,7 +210,7 @@ export default function DisplayMap(props) {
                                 }
                                 {
                                     selected && (
-                                        <InfoWindow position={{ lat: selected.lat, lng: selected.lng }}>
+                                        <InfoWindow position={{ lat: selected.lat, lng: selected.lng }} onCloseClick={() => { setSelected(null) }}>
                                             <div className="card">
                                                 <header className="card-header">
                                                     <p className="card-header-title">
@@ -162,6 +231,7 @@ export default function DisplayMap(props) {
                     </div>
                 </div>
             </div>
-        </div>
+            <CustomFooter />
+        </div >
     );
 }

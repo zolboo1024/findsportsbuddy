@@ -1,5 +1,6 @@
-//Zolboo
-//first step in the multi page form
+//first step in the multi page form that asks the user for what sport they would like to practice
+//Author: Zolboo Erdenebaatar
+
 import React, { Component } from 'react';
 import 'bulma/css/bulma.min.css';
 import CustomNavbar from '../CustomNavbar';
@@ -31,8 +32,8 @@ class AskSport extends Component {
         return (
             <div>
                 <CustomNavbar />
-                <h1 class="title has-text-centered">What sport do you plan to play?</h1>
-                <div class="container m-auto">
+                <h1 className="title has-text-centered">What sport do you plan to play?</h1>
+                <div className="container m-auto">
                     {
                         this.state.selected &&
                         <input
@@ -43,25 +44,25 @@ class AskSport extends Component {
                             onClick={this.props.nextStep}>
                         </input>
                     }
-                    <div id="cards" class="columns is-multiline is-mobile">
+                    <div id="cards" className="columns is-multiline is-mobile">
                         {
                             this.state.emojis &&
                             this.state.emojis.map(
                                 (curCol, curIndex) => {
-                                    return <div class="column is-one-quarter" key={curIndex}>
+                                    return <div className="column is-one-quarter" key={curIndex}>
                                         {curCol.map(
                                             (curCard, curCardIndex) => {
                                                 const curName = curCard.name;
                                                 const curURL = curCard.emojiUrl;
-                                                return <div class="container m-6">
-                                                    <div class="card" key={curName} onClick={() => this.handleSelection(curName)}>
-                                                        <div class="card-header">
-                                                            <p class="card-header-title">
+                                                return <div className="container m-6" key={curCardIndex}>
+                                                    <div className="card" key={curName} onClick={() => this.handleSelection(curName)}>
+                                                        <div className="card-header">
+                                                            <p className="card-header-title">
                                                                 {curName}
                                                             </p>
                                                         </div>
-                                                        <div class="card-image">
-                                                            <figure class="image m-4">
+                                                        <div className="card-image">
+                                                            <figure className="image m-4">
                                                                 {this.state.selected === curName ?
                                                                     <img src={window.location.origin + "/svgs/check.svg"} alt="Checked"></img>
                                                                     :

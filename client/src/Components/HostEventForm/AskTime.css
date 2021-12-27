@@ -5,6 +5,20 @@
 }
 
 #submitbutton {
-    position: absolute;
-    right: 0px;
+    width: 100px;
+}
+
+.innerbox {
+    width: 25%;
+    margin: auto;
+}
+
+#outerSelect {
+    width: 70px;
+    margin: auto;
+}
+
+.center_stuff {
+    width: 130px;
+    margin: auto;
 }

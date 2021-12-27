@@ -1,3 +1,5 @@
+//Connect to the DB to register the user
+//Author: Zolboo Erdenebaatar
 const db = require('./../bin/db-module');
 require('dotenv').config();
 
