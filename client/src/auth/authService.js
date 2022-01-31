@@ -10,7 +10,7 @@ const API_URL = CONFIG.API_URL;
 class authService {
     login(username, password) {
         return axios
-            .post(API_URL + "login", {
+            .post(API_URL + "/login", {
                 username,
                 password
             })
@@ -32,7 +32,7 @@ class authService {
 
     register(username, password) {
         return axios
-            .post(API_URL + "register", {
+            .post(API_URL + "/register", {
                 username,
                 password
             })

@@ -7,7 +7,15 @@ var db = require('./../bin/db-module');
 require('dotenv').config();
 
 router.get('/', function (req, res, next) {
-    res.send('API is working properly');
+    console.log("made it here")
+    db.query('SELECT * from events', [], (err,results) => {
+        if(err) {
+             res.send("error occurred")
+        }
+        else {
+             res.send("no error occurred")
+        }
+    })
 });
 
 //test query on the test table users

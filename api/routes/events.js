@@ -8,6 +8,7 @@ var verifyToken = require('./../middleware/verifyToken');
 require('dotenv').config();
 //gets all the events that was created
 router.get('/getAll', (req, res) => {
+    console.log('request received')
     db.query('SELECT id, host, sport_type, location, start_time, end_time, participants, num_participants, description FROM events',
         [], (error, results) => {
             if (error) {
@@ -19,6 +20,7 @@ router.get('/getAll', (req, res) => {
 });
 //authentication required to create events
 router.post('/create', (req, res) => {
+    console.log('request received')
     //save the required parameters
     var host = req.body.userId;
     var sport = req.body.sport;
